@@ -95,6 +95,24 @@ int main(void)
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
+  FATFS fileSystem;
+  FIL testFile;
+  uint8_t testBuffer[16] = "SD write success";
+  UINT testBytes;
+  FRESULT res;
+  res = f_mount(&fileSystem, SDPath, 1);
+  if(res == FR_OK)
+  {
+    uint8_t path[13] = "testfile.txt";
+    path[12] = '\0';
+
+    res = f_open(&testFile, (char*)path, FA_WRITE | FA_CREATE_ALWAYS);
+
+    res = f_write(&testFile, testBuffer, 16, &testBytes);
+
+    res = f_close(&testFile);
+  }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
